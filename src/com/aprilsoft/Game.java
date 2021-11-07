@@ -34,9 +34,7 @@ public class Game {
         compTurn = false;
 
         placeSheeps(masPlayer);
-//        placeSheeps(masComp);
-
-
+        placeSheeps(masComp);
     }
 
     private void placeSheeps(int[][] mas) {
@@ -125,7 +123,6 @@ public class Game {
         okrEnd(mas);
     }
 
-
     private void make1Deck(int[][] mas) {
         for (int k = 1; k <= 4; k++) {
             while (true) {
@@ -178,7 +175,7 @@ public class Game {
     private  void okrPodbit(int[][] mas, int i, int j) {
         for (int k = i - 1; k < i + 2; k++) {
             for (int s = j - 1; s < j + 2; s++) {
-                if (!(k == i&& s == j)) {
+                if (!(k == i && s == j)) {
                     setOkrPodbit(mas, k, s);
                 }
             }
@@ -288,11 +285,29 @@ public class Game {
         return this.masComp[y][x];
     }
 
-    public int shootPlayer(int j, int i) {
-        return 0;
+    public void shootPlayer(int j, int i) {
+        masComp[i][j] += 7;
+        testKilled(masComp, i, j);
+        testEndGame();
+        if (masComp[i][j] < 8) {
+            compTurn = true;
+            while (compTurn) {
+                compTurn = shootComp();
+            }
+        }
     }
 
-    public int shootComp() {
+    private boolean takeStrike(int[][] masPlayer, int i, int j) {
+        masPlayer[i][j] += 7;
+        testKilled(masPlayer, i, j);
+
+        if (masPlayer[i][j] >= 8) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean shootComp() {
         boolean
                 hitSign = false,
                 woundedExists = false,
@@ -303,18 +318,15 @@ public class Game {
                 //поиск раненого корабля
                 if (masPlayer[i][j] >= 9 && masPlayer[i][j] <= 11) {
                     woundedExists = true;
-                    for ( int k = i - 1; k < i + 2; k++) {
+
+                    for (int k = i - 1; k < i + 2; k++) {
                         for (int s = j - 1; s < j + 2; s++) {
                             if (testMasPoz(k, s) && masPlayer[k][s] <= 4 && masPlayer[k][s] != -2) {
-                                masPlayer[k][s] += 7;
-                                testKilled(masPlayer, k, s);
-                                if (masPlayer[k][s] >= 8) {
-                                    hitSign = true;
-                                }
+                                hitSign = takeStrike(masPlayer, k, s);
                                 isShoot = true;
 
                                 k = i + 10000;
-                                s = j + 500;
+                                s = j + 10000;
                             }
                         }
                     }
@@ -329,22 +341,30 @@ public class Game {
 
         if (!woundedExists) { // если нет раненого - то просто делаем выстрел
             for (int k = 1; k <= 50; k++) {
-                int i = (int) (Math.random() * 10); // 0-9
-                int j = (int) (Math.random() * 10); // 0-9
+                int i = (int) (Math.random() * cellCount); // 0-9
+                int j = (int) (Math.random() * cellCount); // 0-9
+
                 if (masPlayer[i][j] <= 4 && masPlayer[i][j] != -2) {
-                    masPlayer[i][j] += 7;
-                    testKilled(masPlayer, i, j);
-                    if (masPlayer[i][j] >= 8) {
-                        hitSign = true;
-                    }
+                    hitSign = takeStrike(masPlayer, i, j);
                     isShoot = true;
                     break;
                 }
             }
+
             if (!isShoot) {
-                // продолжим
+                for (int i = 0; i < cellCount; i++) {
+                    for (int j = 0; j < cellCount; j++) {
+                        if (masPlayer[i][j] <= 4 && masPlayer[i][j] != -2) {
+                            hitSign = takeStrike(masPlayer, i, j);
+                            break;
+                        }
+                    }
+                }
             }
         }
+        testEndGame();
+
+        return hitSign;
     }
 
     private void testKilled(int[][] mas, int i, int j) {
@@ -377,7 +397,7 @@ public class Game {
         if (deckCount == woundedDeckAmount) {
             for (int k = i - (deckCount - 1); k <= i + (deckCount - 1); k++) {
                 for (int g = j - (deckCount - 1); g <= j + (deckCount - 1); g++) {
-                    if (mas[k][g] == deckCount + 7) {
+                    if (testMasPoz(k, g) && mas[k][g] == deckCount + 7) {
                         mas[k][g] += 7;
                         okrPodbit(mas, k, g);
                     }
@@ -396,7 +416,7 @@ public class Game {
                     kolPlayer += masPlayer[i][j];
                 }
                 if (masComp[i][j] >= 15) {
-                    kolPlayer += masComp[i][j];
+                    kolComp += masComp[i][j];
                 }
             }
         }

@@ -37,7 +37,7 @@ public class MyPanel extends JPanel {
                         int i = (mY - 100) / 30;
                         int j = (mX - 100) / 30;
 
-                        if (game.getCompFieldValueAt(i, j) <= 4) {
+                        if (game.getCompFieldValueAt(i, j) >= -1 && game.getCompFieldValueAt(i, j) <= 4) {
                             game.shootPlayer(i, j);
                         }
                     }
@@ -188,9 +188,8 @@ public class MyPanel extends JPanel {
                 int i = (mY - 100) / 30; // =1
                 int j = (mX - 100) / 30; // =3
 
-                if (game.getCompFieldValueAt(j, i) <= 4) {
-                    gr.fillRect(100 + 30 * j, 100 + 30 * i, 30, 30);
-                }
+                gr.fillRect(100 + 30 * j, 100 + 30 * i, 30, 30);
+
             }
         }
 
@@ -220,23 +219,6 @@ public class MyPanel extends JPanel {
         } else if (game.getEndGame() == 2) { // comp won
             gr.drawImage(end2, 300, 200, 300, 100, null);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }
