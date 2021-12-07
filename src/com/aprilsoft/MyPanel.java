@@ -202,8 +202,8 @@ public class MyPanel extends JPanel {
             gr.drawLine(500 + i * 30, 100, 500 + i * 30, 400);
             gr.drawLine(500, 100 + i * 30, 800, 100 + i * 30);
         }
-//
-//        // отрисовка букв и цифр - координаты
+
+        // отрисовка букв и цифр - координаты
         gr.setFont(new Font("serif", 0, 20));
         gr.setColor(Color.RED);
         for (int i = 1; i <= 10; i++) {

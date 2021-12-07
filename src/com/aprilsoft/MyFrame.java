@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MyFrame extends JFrame {
+
     public MyFrame() {
         MyPanel pan = new MyPanel();
         Container cont = getContentPane();

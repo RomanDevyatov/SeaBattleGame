@@ -9,6 +9,11 @@ public class Game {
 
     public static final int cellCount = 10;
 
+    public Game() {
+        this.masComp = new int[cellCount][cellCount];
+        this.masPlayer = new int[cellCount][cellCount];
+    }
+
     public int getEndGame() {
         return endGame;
     }
@@ -16,12 +21,6 @@ public class Game {
     public boolean getCompTurn() {
         return compTurn;
     }
-
-    public Game() {
-        this.masComp = new int[cellCount][cellCount];
-        this.masPlayer = new int[cellCount][cellCount];
-    }
-
 
     public void start() {
         for (int i = 0; i < masComp.length; i++) {
@@ -427,4 +426,5 @@ public class Game {
             endGame = 1;
         }
     }
+
 }
