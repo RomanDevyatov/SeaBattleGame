@@ -1,16 +1,16 @@
 package com.aprilsoft;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import java.awt.Container;
 
-public class MyFrame extends JFrame {
+public class GameFrame extends JFrame {
 
-    public MyFrame() {
+    public GameFrame() {
         MyPanel pan = new MyPanel();
         Container cont = getContentPane();
         cont.add(pan);
 
-        setTitle("Игра \"Морской бой\"");
+        setTitle("Game \"Sea Battleship\"");
         setBounds(0, 0, 900,600);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,8 +1,8 @@
 package com.aprilsoft;
 
-public class SeaBattle {
+public class RunBattleship {
 
     public static void main(String[] args) {
-        new MyFrame();
+        new GameFrame();
     }
 }
